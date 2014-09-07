@@ -19,12 +19,12 @@ class ArrayPaginate {
 
   /** public methods */
   // Constructor
-  public function __construct($items) {
+  public function __construct(array $items) {
     $this->items = $items;
   }
 
   // Paginate
-  public function paginate($options) {
+  public function paginate(array $options) {
     $this->resetPagination();
     $this->setDefaultOptions($options);
     $this->selectCurrentPage();
@@ -40,12 +40,50 @@ class ArrayPaginate {
   /* private methods */
   // Reset the current pagination fields
   private function resetPagination() {
-    // ...
+    $this->options    = array();
+    $this->items      = array();
+    $this->results    = array();
+    $this->totalPages = null;
+    $this->navigation = null;
   }
 
   // Put the default options in
   private function setDefaultOptions($options) {
-    // ...
+    // items per page
+    if (!isset($options['itemsPerPage'])) {
+      $options['itemsPerPage'] = 5;
+    }
+
+    // current page
+    if (!isset($options['currentPage'])) {
+      $options['currentPage'] = 1;
+    }
+
+    // url
+    if (!isset($options['url'])) {
+      $options['url'] = '?p=%page%';
+    }
+
+    // labels
+    if (!isset($options['labels']['first'])) {
+      $options['labels']['first'] = '&lt;&lt;';
+    }
+    if (!isset($options['labels']['prev'])) {
+      $options['labels']['prev'] = '&lt;';
+    }
+    if (!isset($options['labels']['next'])) {
+      $options['labels']['next'] = '&gt;';
+    }
+    if (!isset($options['labels']['last'])) {
+      $options['labels']['last'] = '&gt;&gt;';
+    }
+
+    // maximum number of navigation links
+    if (!isset($options['maxNavLinks'])) {
+      $options['maxNavLinks'] = 0;
+    }
+
+    $this->options = $options;
   }
 
   // Set the current page and slice the array
