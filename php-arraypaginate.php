@@ -101,17 +101,21 @@ class ArrayPaginate {
     $totalPages  = $this->totalPages;
     $labels      = $this->options['labels'];
 
+    // Fixing boundaries
+    $prev = ($currentPage > 1) ? $currentPage - 1 : 1;
+    $next = ($currentPage < $totalPages) ? $currentPage + 1 : $totalPages;
+
     // first
     $html .= $this->createNavigationAnchor(1, $labels['first']);
     // prev
 
-    $html .= $this->createNavigationAnchor($currentPage - 1, $labels['prev']);
+    $html .= $this->createNavigationAnchor($prev, $labels['prev']);
 
     // numbers
     // ...
 
     // next
-    $html .= $this->createNavigationAnchor($currentPage + 1, $labels['next']);
+    $html .= $this->createNavigationAnchor($next, $labels['next']);
 
     // last
     $html .= $this->createNavigationAnchor($totalPages, $labels['last']);
@@ -128,7 +132,31 @@ class ArrayPaginate {
       $label = $pageNumber;
     }
 
-    // ...
+    // add the html element
+    $properties = array(
+      'class' => 'page',
+      'href' => str_replace('%page%', $pageNumber, $this->options['url']),
+    );
+    $html .= $this->createHtmlElement('a', $properties, $label);
+
+    return $html;
+  }
+
+  // Create an html element
+  private function createHtmlElement($type, $properties, $content) {
+    // opening tag
+    $html = '<' . $type;
+
+    // properties
+    foreach ($properties as $key => $value) {
+      $html .= ' ' . $key . '="' . $value . '"';
+    }
+
+    // content
+    $html .= '>'. $content;
+
+    // closing tag
+    $html .= '</' . $type . '>';
 
     return $html;
   }
