@@ -33,4 +33,4 @@ Full API and examples are available on the [wiki](//github.com/lokothodida/php-a
 *PHP ArrayPaginate* is licensed under [MIT](http://www.opensource.org/licenses/MIT).
 
 ## Copright
-&copy Lawrence Okoth-Odida. All rights reserved.
+&copy; Lawrence Okoth-Odida. All rights reserved.
