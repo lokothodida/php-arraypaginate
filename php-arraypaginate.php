@@ -11,7 +11,34 @@ class ArrayPaginate {
   /** constants*/
 
   /** properties */
+  private $options,
+          $items,
+          $results,
+          $totalPages,
+          $navigation
 
   /** public methods */
+  // Constructor
+  public function __construct($items) {
+    $this->items = $items;
+  }
+
+  // Paginate
+  public function paginate($options) {
+    $this->resetPagination();
+    $this->setDefaultOptions($options);
+    $this->selectCurrentPage();
+    $this->buildNavigation();
+
+    return array(
+      'results'    => $this->results,
+      'totalPages' => $this->totalPages,
+      'navigation' => $this->navigation,
+    );
+  }
+
+  /* private methods */
+  // ...
+}
 
 ?>
