@@ -38,7 +38,25 @@ class ArrayPaginate {
   }
 
   /* private methods */
-  // ...
+  // Reset the current pagination fields
+  private function resetPagination() {
+    // ...
+  }
+
+  // Put the default options in
+  private function setDefaultOptions($options) {
+    // ...
+  }
+
+  // Set the current page and slice the array
+  private function selectCurrentPage() {
+    // ...
+  }
+
+  // Build up the navigation html
+  private function buildNavigation() {
+    // ...
+  }
 }
 
 ?>
