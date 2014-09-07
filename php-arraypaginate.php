@@ -15,7 +15,7 @@ class ArrayPaginate {
           $items,
           $results,
           $totalPages,
-          $navigation
+          $navigation;
 
   /** public methods */
   // Constructor
