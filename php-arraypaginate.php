@@ -119,25 +119,29 @@ class ArrayPaginate {
 
       // check if the bounds are too high/low
       if ($upperBound >= $totalPages) {
+        // too high
         $start = $lowerBound - ($upperBound - $totalPages);
       } elseif ($lowerBound <= 1) {
+        // too low
         $end = $maxNavLinks;
       } else {
+        // bounds are fine
         $start = $lowerBound;
         $end   = $upperBound;
       }
     }
 
+    // fix prev/next numbers
     $prev = ($currentPage > 1) ? $currentPage - 1 : 1;
     $next = ($currentPage < $totalPages) ? $currentPage + 1 : $totalPages;
 
     // first
     $html .= $this->createNavigationAnchor(1, $labels['first'], 'first');
-    // prev
 
+    // prev
     $html .= $this->createNavigationAnchor($prev, $labels['prev'], 'prev');
 
-    // just show all of the page numbers
+    // show page numbers in the [$start...$end] range
     for ($i = $start; $i <= $end; $i++) {
 
       if ($i == $currentPage) {
