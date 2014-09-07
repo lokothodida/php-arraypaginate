@@ -37,7 +37,7 @@ class ArrayPaginate {
     );
   }
 
-  /* private methods */
+  /** private methods */
   // Reset the current pagination fields
   private function resetPagination() {
     $this->options    = array();
@@ -82,6 +82,11 @@ class ArrayPaginate {
       $options['maxNavLinks'] = 0;
     }
 
+    // preserve keys
+    if (!isset($options['preserveKeys'])) {
+      $options['preserveKeys'] = false;
+    }
+
     $this->options = $options;
   }
 
@@ -90,7 +95,8 @@ class ArrayPaginate {
     $currentPage   = $this->options['currentPage'];
     $itemsPerPage  = $this->options['itemsPerPage'];
     $start         = ($currentPage - 1) * $itemsPerPage;
-    $this->results = array_slice($this->items, $start, $itemsPerPage);
+    $preserveKeys  = $this->options['preserveKeys'];
+    $this->results = array_slice($this->items, $start, $itemsPerPage, $preserveKeys);
     $this->totalPages = ceil(count($this->items) / $itemsPerPage);
   }
 
