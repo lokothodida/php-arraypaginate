@@ -23,17 +23,21 @@ $results = $ap->paginate(array(
   'itemsPerPage' => 5,
   'currentPage'  => $_GET['page'],
   'url'          => '?page=%page%',
+  'maxNavLinks'  => 5,
 ));
 
 // output the navigation
 echo $results['navigation'];
 
 // state the total number of pages
-echo '<p>Total pages : ' . $results['totalPages'] . '</p>';
+echo '<p>Page ' . $_GET['page'] . ' of ' . $results['totalPages'] . '</p>';
 
 // display the results for this page
 foreach ($results['results'] as $result) {
   var_dump($result); echo '<br><br>';
 }
+
+// output the navigation again at the bottom
+echo $results['navigation'];
 
 ?>
