@@ -41,7 +41,6 @@ class ArrayPaginate {
   // Reset the current pagination fields
   private function resetPagination() {
     $this->options    = array();
-    $this->items      = array();
     $this->results    = array();
     $this->totalPages = null;
     $this->navigation = null;
@@ -88,7 +87,10 @@ class ArrayPaginate {
 
   // Set the current page and slice the array
   private function selectCurrentPage() {
-    // ...
+    $currentPage   = $this->options['currentPage'];
+    $itemsPerPage  = $this->options['itemsPerPage'];
+    $start         = ($currentPage - 1) * $itemsPerPage;
+    $this->results = array_slice($this->items, $start, $itemsPerPage);
   }
 
   // Build up the navigation html
