@@ -100,31 +100,58 @@ class ArrayPaginate {
     $currentPage = $this->options['currentPage'];
     $totalPages  = $this->totalPages;
     $labels      = $this->options['labels'];
+    $maxNavLinks = $this->options['maxNavLinks'];
 
     // Fixing boundaries
+    $start = 1;
+    $end = $totalPages;
+
+    if ($maxNavLinks && $totalPages > $maxNavLinks) {
+      // we have a restriction on the number of pages to show
+      $upperBound = $currentPage - 1 + ceil($maxNavLinks / 2);
+      $lowerBound = $currentPage - floor($maxNavLinks / 2);
+
+      // check if the bounds are too high/low
+      if ($upperBound >= $totalPages) {
+        $start = $lowerBound - ($upperBound - $totalPages);
+      } elseif ($lowerBound <= 1) {
+        $end = $maxNavLinks;
+      } else {
+        $start = $lowerBound;
+        $end   = $upperBound;
+      }
+    }
+
     $prev = ($currentPage > 1) ? $currentPage - 1 : 1;
     $next = ($currentPage < $totalPages) ? $currentPage + 1 : $totalPages;
 
     // first
-    $html .= $this->createNavigationAnchor(1, $labels['first']);
+    $html .= $this->createNavigationAnchor(1, $labels['first'], 'first');
     // prev
 
-    $html .= $this->createNavigationAnchor($prev, $labels['prev']);
+    $html .= $this->createNavigationAnchor($prev, $labels['prev'], 'prev');
 
-    // numbers
-    // ...
+    // just show all of the page numbers
+    for ($i = $start; $i <= $end; $i++) {
+
+      if ($i == $currentPage) {
+        $html .= $this->createSpan($i, array());
+      } else {
+        $html .= $this->createNavigationAnchor($i);
+      }
+    }
 
     // next
-    $html .= $this->createNavigationAnchor($next, $labels['next']);
+    $html .= $this->createNavigationAnchor($next, $labels['next'], 'next');
 
     // last
-    $html .= $this->createNavigationAnchor($totalPages, $labels['last']);
+    $html .= $this->createNavigationAnchor($totalPages, $labels['last'], 'last');
 
     $this->navigation = $html;
   }
 
   // Create a navigation link
-  private function createNavigationAnchor($pageNumber, $label = false) {
+  private function createNavigationAnchor($pageNumber, $label = false, $labelKey = false) {
     $html = '';
 
     // set the label to the page number if it isn't supplied
@@ -134,12 +161,17 @@ class ArrayPaginate {
 
     // add the html element
     $properties = array(
-      'class' => 'page',
+      'class' => (!$labelKey) ? 'page-' . $pageNumber : $labelKey,
       'href' => str_replace('%page%', $pageNumber, $this->options['url']),
     );
     $html .= $this->createHtmlElement('a', $properties, $label);
 
     return $html;
+  }
+
+  // Create a span
+  private function createSpan($content, $properties) {
+    return $this->createHtmlElement('span', $properties, $content);
   }
 
   // Create an html element
